@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%it-a(y*7gl7!67n5!nac=r%1ff%__h1#33pb*g^ft!-h*&c0g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.111.1']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.18']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'authentification',
+    'dataa',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -120,6 +121,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
