@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from datapg import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentification/', include('authentification.urls')),
@@ -25,7 +26,6 @@ urlpatterns = [
     path('fetch/', views.fetch_data, name='fetch_data'),
     path('ttl_heures/', views.ttl_heures, name='ttl_heures'),
     path('results/', views.calculate_hours, name='calculate_hours'),
-
 ]
 
  

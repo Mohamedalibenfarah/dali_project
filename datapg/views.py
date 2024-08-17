@@ -10,6 +10,8 @@ from .forms import UploadFileForm
 from datetime import datetime, timedelta, date
 from django.views.decorators.csrf import csrf_exempt
 import numpy as np
+from django.shortcuts import render
+
 
 @csrf_exempt
 def upload_file(request):
@@ -161,3 +163,4 @@ def calculate_hours(request):
 
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
