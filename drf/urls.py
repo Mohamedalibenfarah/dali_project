@@ -26,6 +26,8 @@ urlpatterns = [
     path('fetch/', views.fetch_data, name='fetch_data'),
     path('ttl_heures/', views.ttl_heures, name='ttl_heures'),
     path('results/', views.calculate_hours, name='calculate_hours'),
+
+    
 ]
 
  
