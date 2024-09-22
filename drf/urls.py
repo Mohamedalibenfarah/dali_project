@@ -1,33 +1,20 @@
-"""
-URL configuration for deloidrf project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
-from datapg import views
-
+from datapg import views  
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('authentification/', include('authentification.urls')),
-    path('upload/', views.upload_file, name='upload_file'),
-    path('fetch/', views.fetch_data, name='fetch_data'),
-    path('ttl_heures/', views.ttl_heures, name='ttl_heures'),
-    path('results/', views.calculate_hours, name='calculate_hours'),
-
+    path('admin/', admin.site.urls),  # Admin panel
+    path('authentification/', include('authentification.urls')),  # Authentication module
     
+    # View for file upload
+    path('upload/', views.upload_file, name='upload_file'),
+    
+    # View for fetching data
+    path('fetch/', views.fetch_data, name='fetch_data'),
+    
+    # View for calculating total hours per assistant
+    path('ttl_heures/', views.ttl_heures, name='ttl_heures'),
+    
+    # View for calculating total hours (theoretical and real)
+    path('results/', views.calculate_hours, name='calculate_hours'),
 ]
-
- 

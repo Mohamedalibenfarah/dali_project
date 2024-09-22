@@ -96,20 +96,14 @@ def fetch_data(request):
     
 def calculate_total_hours(start_date, end_date, hours_per_day, num_holidays):
     total_hours = 0
-
-    # Calculate the number of working days between start_date and end_date
     current_date = start_date
     while current_date <= end_date:
-        # Check if the current day is a weekday (Monday=0, Sunday=6)
-        if current_date.weekday() < 5:  
+        if current_date.weekday() < 5: 
             total_hours += hours_per_day
-
         current_date += timedelta(days=1)
-
-    # Subtract the number of holidays from the total hours
     total_hours -= num_holidays * hours_per_day
-
     return total_hours
+
 
 
 
@@ -142,18 +136,34 @@ def calculate_hours(request):
         holidays_str = request.GET.get('holidays')
 
         try:
+            # Convert request parameters to correct data types
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
             hours_per_day = int(hours_per_day_str)
             holidays = int(holidays_str)
 
-            # Calculate hours here
-            # Replace this with your actual calculation logic
-            total_hours_thorique = (end_date - start_date).days * hours_per_day
+            # Calculate total theoretical hours for the entire period
+            total_days = (end_date - start_date).days
+            total_hours_thorique = total_days * hours_per_day
 
+            # Fetch real total hours per assistant
+            total_hours_reel = MydataPg.objects.filter(Date__range=[start_date, end_date])\
+                .values('Assistant')\
+                .annotate(total_hours=Sum('Nbre_heures'))
+
+            # Add the theoretical hours for each assistant in the response
+            total_hours_reel_list = []
+            for entry in total_hours_reel:
+                assistant_data = {
+                    'Assistant': entry['Assistant'],
+                    'total_hours_reel': entry['total_hours'] or 0,  # Default to 0 if null
+                    'total_hours_thorique': total_hours_thorique,  # Same for all
+                }
+                total_hours_reel_list.append(assistant_data)
+
+            # Return the result as a JSON response
             data = {
-                'total_hours_thorique': total_hours_thorique,
-                'total_hours_reel': []  # Replace this with your actual data
+                'total_hours_reel_list': total_hours_reel_list,
             }
 
             return JsonResponse(data)
@@ -161,6 +171,4 @@ def calculate_hours(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-    else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
-    
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
